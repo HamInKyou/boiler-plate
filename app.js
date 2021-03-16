@@ -1,4 +1,5 @@
 const express = require("express");
+const cookieParser = require("cookie-parser");
 
 // db 관련
 const db = require("./models");
@@ -13,8 +14,17 @@ class App {
     // 미들웨어 셋팅
     this.setMiddleWare();
 
+    // cookieParser 셋팅
+    this.setCookieParser();
+
     // 라우팅
     this.getRouting();
+
+    // 라우트를 찾을수가 없음
+    this.status404();
+
+    // 에러처리
+    this.errorHandler();
   }
 
   // DB 접속
@@ -36,9 +46,32 @@ class App {
     this.app.use(express.urlencoded({ extended: false }));
   }
 
+  setCookieParser() {
+    this.app.use(cookieParser(process.env.COOKIE_SECRET));
+  }
+
   // 라우팅
   getRouting() {
     this.app.use(require("./routes"));
+  }
+
+  status404() {
+    this.app.use((req, _, next) => {
+      const error = new Error(`${req.method} ${req.url} Router Not Found`);
+      error.status = 404;
+      next(error);
+    });
+  }
+
+  errorHandler() {
+    this.app.use((err, req, res, _) => {
+      const status = err.status || 500;
+      const errBody = {
+        status,
+        message: err.message,
+      };
+      return res.status(status).send(errBody);
+    });
   }
 }
 

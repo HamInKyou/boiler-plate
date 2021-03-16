@@ -2,7 +2,10 @@ const express = require("express");
 const router = express.Router();
 const ctrl = require("../../controllers/user.ctrl");
 
-// 댓글 작성하기
-router.post("/", ctrl.createUser);
+// 회원가입하기
+router.post("/register", ctrl.createUser);
+
+// 로그인하기
+router.post("/login", ctrl.loginUser);
 
 module.exports = router;
