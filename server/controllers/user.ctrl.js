@@ -61,8 +61,8 @@ exports.loginUser = async (req, res, next) => {
 
     //jsonwebtoken을 이용해서 token 생성
     try {
-      //user.id 와 process.env.COOKIE_SECRET을 붙여서 토큰을 만들어준다.
-      //반대로 토큰에서 process.env.COOKIE_SECRET을 빼면 user.id가 나오겠지!
+      //user.id 와 process.env.COOKIE_SECRET을 붙여서 토큰을 만들어준다. (토큰 인코딩)
+      //반대로 토큰에서 process.env.COOKIE_SECRET을 빼면 user.id가 나오겠지! (토큰 디코딩)
       const token = jwt.sign(user.id, process.env.COOKIE_SECRET);
 
       //DB에 유저에게 할당한 토큰 업데이트
@@ -85,6 +85,37 @@ exports.loginUser = async (req, res, next) => {
       error.status = 400;
       throw error;
     }
+  } catch (error) {
+    return next(error);
+  }
+};
+
+//유저 로그아웃하기
+exports.logoutUser = async (req, res, next) => {
+  try {
+    await User.update(
+      { token: "" },
+      {
+        where: { id: req.user.id },
+      }
+    );
+    const resBody = {
+      success: true,
+    };
+    res.status(200).send(resBody);
+  } catch (error) {
+    return next(error);
+  }
+};
+
+//유저 인증하기
+exports.authUser = async (req, res, next) => {
+  try {
+    const resBody = {
+      isAuth: true,
+      user: req.user,
+    };
+    res.status(200).send(resBody);
   } catch (error) {
     return next(error);
   }

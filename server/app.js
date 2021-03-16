@@ -52,7 +52,7 @@ class App {
 
   // 라우팅
   getRouting() {
-    this.app.use(require("./routes"));
+    this.app.use("/api", require("./routes"));
   }
 
   status404() {
