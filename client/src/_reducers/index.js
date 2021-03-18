@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-//import user from './user_reducer';
+import user from "./user_reducer";
 
 //Store에는 Reducer들이 여러개 있을 수 있다.
 //왜? -> Reducer 안에서 하는 일이 어떻게 State가 변화하는지 보여준 다음에
@@ -8,7 +8,7 @@ import { combineReducers } from "redux";
 //이 나뉘어진 Reducer들을 combineReducer라는 것을 이용해서
 //rootReducer에서 하나로 합쳐준다!
 const rootReducer = combineReducers({
-  //user
+  user,
 });
 
 export default rootReducer;
