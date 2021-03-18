@@ -26,7 +26,7 @@ exports.createUser = async (req, res, next) => {
 
     const status = 200;
     const resBody = {
-      status,
+      registerSuccess: true,
       newUser,
     };
     return res.status(status).send(resBody);

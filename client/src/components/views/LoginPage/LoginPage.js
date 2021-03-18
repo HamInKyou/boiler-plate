@@ -53,13 +53,13 @@ function LoginPage(props) {
         style={{ display: "flex", flexDirection: "column" }}
         onSubmit={onSubmitHandler}
       >
-        <label>Id</label>
+        <label>아이디</label>
         {/*UserId State를 만들고, 유저가 타이핑하면 onUserIdHandler 호출해서 State 바뀌게 */}
         <input type="text" value={UserId} onChange={onUserIdHandler} />
-        <label>Password</label>
+        <label>비밀번호</label>
         <input type="password" value={Password} onChange={onPasswordHandler} />
         <br />
-        <button>login</button>
+        <button>로그인</button>
       </form>
     </div>
   );
