@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { loginUser } from "../../../_actions/user_action";
+import { withRouter } from "react-router-dom";
 
 function LoginPage(props) {
   const dispatch = useDispatch();
@@ -20,11 +21,6 @@ function LoginPage(props) {
     //기본적으로 submit할 때 page refresh 되는데,
     //이걸 막아주기 위해서!
     event.preventDefault();
-
-    //버튼을 누른 시점의
-    //Email과 Password
-    console.log("userId", UserId);
-    console.log("Password", Password);
 
     const body = {
       userId: UserId,
@@ -65,4 +61,5 @@ function LoginPage(props) {
   );
 }
 
-export default LoginPage;
+//withRouter로 감싸줘야지  props.history.push를 쓸 수 있다.
+export default withRouter(LoginPage);
