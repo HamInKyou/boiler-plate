@@ -15,7 +15,7 @@ const auth = async (req, res, next) => {
       //유저가 없으면 인증 No!
       const resBody = {
         isAuth: false,
-        errorMessage: "인증 실패",
+        message: "인증 실패",
       };
       return res.send(resBody);
     }

@@ -1,6 +1,7 @@
 const { User } = require("../models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const moment = require("moment");
 
 //회원가입하기
 exports.createUser = async (req, res, next) => {
@@ -11,7 +12,11 @@ exports.createUser = async (req, res, next) => {
     if (exUser) {
       const error = new Error("이미 해당 아이디의 유저가 존재합니다.");
       error.status = 409;
-      throw error;
+      const errBody = {
+        success: false,
+        message: error.message,
+      };
+      return res.send(errBody);
     }
 
     //비번 암호화
@@ -26,7 +31,7 @@ exports.createUser = async (req, res, next) => {
 
     const status = 200;
     const resBody = {
-      registerSuccess: true,
+      success: true,
       newUser,
     };
     return res.status(status).send(resBody);
@@ -45,7 +50,11 @@ exports.loginUser = async (req, res, next) => {
       //요청된 아이디가 데이터베이스에서 없다면
       const error = new Error("해당 유저가 존재하지 않습니다.");
       error.status = 401;
-      throw error;
+      const errBody = {
+        success: false,
+        message: error.message,
+      };
+      return res.send(errBody);
     }
 
     //요청된 아이디가 데이터베이스에 있다면 비밀번호가 맞는 비밀번호인지 확인
@@ -54,7 +63,11 @@ exports.loginUser = async (req, res, next) => {
       //비밀번호가 틀리다면
       const error = new Error("비밀번호가 틀립니다.");
       error.status = 401;
-      throw error;
+      const errBody = {
+        success: false,
+        message: error.message,
+      };
+      return res.send(errBody);
     }
 
     //비밀번호까지 맞다면 토큰을 생성하기
@@ -75,7 +88,7 @@ exports.loginUser = async (req, res, next) => {
 
       //유저에게 돌려보낼 body
       const resBody = {
-        loginSuccess: true,
+        success: true,
         userId: user.id,
       };
 
@@ -83,7 +96,11 @@ exports.loginUser = async (req, res, next) => {
       res.cookie("x_auth", token).status(200).send(resBody);
     } catch (error) {
       error.status = 400;
-      throw error;
+      const errBody = {
+        success: false,
+        message: error.message,
+      };
+      return res.send(errBody);
     }
   } catch (error) {
     return next(error);

@@ -67,7 +67,7 @@ class App {
     this.app.use((err, req, res, _) => {
       const status = err.status || 500;
       const errBody = {
-        status,
+        success: false,
         message: err.message,
       };
       return res.status(status).send(errBody);
